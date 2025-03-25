@@ -1,8 +1,10 @@
 import "./style.css";
 import { setupBoard } from "./board.ts";
-// import { setupCounter } from "./counter.ts";
 
-// document.querySelector<HTMLDivElement>("#app")!.innerHTML = ``;
-
-// setupCounter(document.querySelector<HTMLButtonElement>("#counter")!);
-setupBoard(document.querySelector<HTMLDivElement>("#app")!);
+const appElement = document.querySelector<HTMLDivElement>("#app")!;
+appElement.innerHTML = ``;
+addEventListener("resize", () => {
+  appElement.innerHTML = ``;
+  setupBoard(appElement);
+});
+setupBoard(appElement);

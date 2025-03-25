@@ -1,29 +1,45 @@
 :root {
   --gruvbox-fg-color: rgba(60, 56, 54, 255);
   --gruvbox-bg-color: rgba(40, 40, 40, 255);
-  --gruvbox-green: rgba(120, 160, 105, 255);
-  --gruvbox-red: rgba(230, 70, 50, 255);
+  --gruvbox-green-color: rgba(120, 160, 105, 255);
+  --gruvbox-red-color: rgba(230, 70, 50, 255);
+  --gruvbox-yellow-color: rgba(250, 190, 50, 255);
+  --gruvbox-orange-color: rgba(245, 125, 25, 255);
 
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  /* color-scheme: light dark; */
-  /* color: rgba(); */
   background-color: var(--gruvbox-bg-color);
 
   font-synthesis: none;
-  text-render5ing: optimizeLegibility;
+  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.ust-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  border-style: solid;
+  border-width: 2px 2px solid;
+  border-color: var(--gruvbox-fg-color);
+  width: 95vh;
+  height: 95vh;
 }
 
 .utt-container {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  width: 95vh;
-  height: 95vh;
+  align-items: center;
+  border-style: solid;
+  border-width: 2px 0px;
+  border-color: var(--gruvbox-fg-color);
+  width: 100%;
+  height: 100%;
   background-color: var(--gruvbox-fg-color);
 }
 
@@ -31,36 +47,55 @@
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  row-gap: 2px;
-  width: 100%;
-  height: 97%;
-  border-style: dashed;
-  border-width: medium;
+  align-items: center;
+  border-style: solid;
+  border-width: 2px 0px;
   border-color: var(--gruvbox-fg-color);
+  width: 100%;
+  height: 100%;
   background-color: var(--gruvbox-fg-color);
 }
 
 .ttt-row {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  column-gap: 2px;
+  justify-content: space-evenly;
+  align-items: center;
+  /* border-style: solid; */
+  border-width: 0px 3px 0px;
+  border-color: var(--gruvbox-fg-color);
   width: 100%;
   height: 100%;
+}
+
+.ttt-overlay {
+  position: absolute;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  font-size: 100%;
 }
 
 /* .ttt-button { */
 button {
   width: 100%;
   height: 100%;
-  border: none;
+  border: none; /* required to remove weird button bordering */
+  /* border-style: solid; */
+  border-width: 0px 1px 0px;
+  border-color: var(--gruvbox-fg-color);
+  font-size: 1vh;
   background-color: var(--gruvbox-bg-color);
 }
 button:hover {
-  background-color: var(--gruvbox-bg-color);
+  background-color: var(--gruvbox-fg-color);
 }
-button:disabled {
+button:active {
+  background-color: var(--gruvbox-orange-color);
 }
+/* button:disabled { */
+/* } */
 
 /* a { */
 /*   font-weight: 500; */
