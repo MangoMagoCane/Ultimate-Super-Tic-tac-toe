@@ -1,17 +1,19 @@
 :root {
-  --gruvbox-fg-color: rgba(60, 56, 54, 255);
-  --gruvbox-bg-color: rgba(40, 40, 40, 255);
-  --gruvbox-green-color: rgba(120, 160, 105, 255);
-  --gruvbox-red-color: rgba(230, 70, 50, 255);
-  --gruvbox-yellow-color: rgba(250, 190, 50, 255);
-  --gruvbox-orange-color: rgba(245, 125, 25, 255);
-  --gruvbox-blue-color: rgba(130, 165, 150, 255);
-  --gruvbox-teal-color: rgba(140, 190, 125, 255);
-  --gruvbox-purple-color: rgba(210, 135, 155, 255);
+  --gruvbox-fg-color: rgb(60, 56, 54);
+  --gruvbox-bg-color: rgb(40, 40, 40);
+  --gruvbox-green-color: rgb(120, 160, 105);
+  --gruvbox-red-color: rgb(230, 70, 50);
+  --gruvbox-yellow-color: rgb(250, 190, 50);
+  --gruvbox-orange-color: rgb(245, 125, 25);
+  --gruvbox-blue-color: rgb(130, 165, 150);
+  --gruvbox-teal-color: rgb(140, 190, 125);
+  --gruvbox-purple-color: rgb(210, 135, 155);
 
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+
+  user-select: none;
 
   background-color: var(--gruvbox-bg-color);
 
@@ -77,8 +79,11 @@
 }
 .ttt-overlay:hover {
   background-color: var(--gruvbox-fg-color);
+  /* opacity: 0.8; */
 }
-
+.ttt-overlay:active {
+  background-color: var(--gruvbox-orange-color);
+}
 
 /* .ttt-button { */
 button {

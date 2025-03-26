@@ -1,3 +1,6 @@
+import { buttonClick } from "./gameLogic";
+import { GridCoord } from "./types";
+
 export function setupBoard(element: HTMLDivElement): void {
   const container: HTMLDivElement = document.createElement("div");
   container.className = "ust-container";
@@ -7,8 +10,7 @@ export function setupBoard(element: HTMLDivElement): void {
     row.className = "ttt-row";
 
     for (let j = 0; j < 3; j++) {
-      const grid: HTMLDivElement = createBoard(i * 3 + j);
-      // button.onclick = (): void => buttonClick(idNumber * 9 + i * 3 + j);
+      const grid: HTMLDivElement = createBoard({ y: i, x: j });
       row.appendChild(grid);
     }
 
@@ -19,20 +21,20 @@ export function setupBoard(element: HTMLDivElement): void {
   positionOverlays(2);
 }
 
-function createBoard(idNumber: number): HTMLDivElement {
+function createBoard(ustCoord: GridCoord): HTMLDivElement {
   const container: HTMLDivElement = document.createElement("div");
   container.className = "utt-container";
 
   const overlay: HTMLDivElement = document.createElement("div");
   overlay.className = "ttt-overlay";
+  overlay.onclick = (): void => buttonClick(ustCoord);
 
   for (let i = 0; i < 3; i++) {
     const row: HTMLDivElement = document.createElement("div");
     row.className = "ttt-row";
 
     for (let j = 0; j < 3; j++) {
-      const gridIndex: number = idNumber * 9 + (i * 3 + j);
-      const grid: HTMLDivElement = createGrid(gridIndex);
+      const grid: HTMLDivElement = createGrid(ustCoord, { y: i, x: j });
       row.appendChild(grid);
     }
 
@@ -43,12 +45,13 @@ function createBoard(idNumber: number): HTMLDivElement {
   return container;
 }
 
-function createGrid(idNumber: number): HTMLDivElement {
+function createGrid(ustCoord: GridCoord, uttCoord: GridCoord): HTMLDivElement {
   const container: HTMLDivElement = document.createElement("div");
   container.className = "ttt-container";
 
   const overlay: HTMLDivElement = document.createElement("div");
   overlay.className = "ttt-overlay";
+  overlay.onclick = (): void => buttonClick(ustCoord, uttCoord);
 
   for (let i = 0; i < 3; i++) {
     const row: HTMLDivElement = document.createElement("div");
@@ -56,12 +59,12 @@ function createGrid(idNumber: number): HTMLDivElement {
 
     for (let j = 0; j < 3; j++) {
       const button: HTMLButtonElement = document.createElement("button");
-      const buttonIndex: number = idNumber * 9 + (i * 3 + j);
+      const tttCoord: GridCoord = { y: i, x: j };
       if (Math.floor(Math.random() * 2)) {
         button.innerText = Math.floor(Math.random() * 2) ? "X" : "O";
       }
-      button.style.color = `var(--gruvbox-${buttonIndex % 2 == 0 ? "red" : "green"}-color)`;
-      button.onclick = (): void => buttonClick(buttonIndex);
+      button.style.color = `var(--gruvbox-${tttCoord.x % 2 == 0 ? "red" : "green"}-color)`;
+      button.onclick = (): void => buttonClick(ustCoord, uttCoord, tttCoord);
       row.appendChild(button);
     }
 
@@ -70,10 +73,6 @@ function createGrid(idNumber: number): HTMLDivElement {
 
   container.appendChild(overlay);
   return container;
-}
-
-function buttonClick(idNumber: number): void {
-  console.log(idNumber);
 }
 
 function positionOverlays(colorSetIndex: number): void {
@@ -87,16 +86,14 @@ function positionOverlays(colorSetIndex: number): void {
   for (let overlay of overlays) {
     overlay = overlay as HTMLDivElement;
     const container = overlay.parentElement as HTMLDivElement;
-    console.log(container.style);
-
     const colorIndex: number = Math.floor(Math.random() * 2);
     overlay.style.color = `var(--gruvbox-${colorSets[colorSetIndex][colorIndex]}-color)`;
+
     if (Math.floor(Math.random() * 2)) {
       overlay.innerText = colorIndex ? "X" : "O";
     }
 
     overlay.style.display = overlay.innerText === "" ? "none" : "flex";
-
     overlay.style.width = container.clientWidth + "px";
     overlay.style.height = container.clientHeight + "px";
     overlay.style.left = container.offsetLeft + 2 + "px";
