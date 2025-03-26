@@ -26,8 +26,9 @@ function createBoard(ustCoord: GridCoord): HTMLDivElement {
   container.className = "utt-container";
 
   const overlay: HTMLDivElement = document.createElement("div");
+  overlay.id = gridId(ustCoord);
   overlay.className = "ttt-overlay";
-  overlay.onclick = (): void => buttonClick(ustCoord);
+  overlay.onclick = (): void => buttonClick(overlay, ustCoord);
 
   for (let i = 0; i < 3; i++) {
     const row: HTMLDivElement = document.createElement("div");
@@ -50,21 +51,24 @@ function createGrid(ustCoord: GridCoord, uttCoord: GridCoord): HTMLDivElement {
   container.className = "ttt-container";
 
   const overlay: HTMLDivElement = document.createElement("div");
+  overlay.id = gridId(ustCoord, uttCoord);
   overlay.className = "ttt-overlay";
-  overlay.onclick = (): void => buttonClick(ustCoord, uttCoord);
+  overlay.onclick = (): void => buttonClick(overlay, ustCoord, uttCoord);
 
   for (let i = 0; i < 3; i++) {
     const row: HTMLDivElement = document.createElement("div");
     row.className = "ttt-row";
 
     for (let j = 0; j < 3; j++) {
-      const button: HTMLButtonElement = document.createElement("button");
       const tttCoord: GridCoord = { y: i, x: j };
-      if (Math.floor(Math.random() * 2)) {
-        button.innerText = Math.floor(Math.random() * 2) ? "X" : "O";
-      }
-      button.style.color = `var(--gruvbox-${tttCoord.x % 2 == 0 ? "red" : "green"}-color)`;
-      button.onclick = (): void => buttonClick(ustCoord, uttCoord, tttCoord);
+      const button: HTMLButtonElement = document.createElement("button");
+      button.id = gridId(ustCoord, uttCoord, tttCoord);
+      // if (Math.floor(Math.random() * 2)) {
+      //   button.innerText = Math.floor(Math.random() * 2) ? "X" : "O";
+      // }
+      button.style.color = `var(--gruvbox-${tttCoord.x % 2 === 0 ? "red" : "blue"}-color)`;
+      button.onclick = (): void =>
+        buttonClick(button, ustCoord, uttCoord, tttCoord);
       row.appendChild(button);
     }
 
@@ -89,9 +93,9 @@ function positionOverlays(colorSetIndex: number): void {
     const colorIndex: number = Math.floor(Math.random() * 2);
     overlay.style.color = `var(--gruvbox-${colorSets[colorSetIndex][colorIndex]}-color)`;
 
-    if (Math.floor(Math.random() * 2)) {
-      overlay.innerText = colorIndex ? "X" : "O";
-    }
+    // if (Math.floor(Math.random() * 2) && colorSetIndex === 2) {
+    //   overlay.innerText = colorIndex ? "X" : "O";
+    // }
 
     overlay.style.display = overlay.innerText === "" ? "none" : "flex";
     overlay.style.width = container.clientWidth + "px";
@@ -100,4 +104,12 @@ function positionOverlays(colorSetIndex: number): void {
     overlay.style.top = container.offsetTop + "px";
     overlay.style.fontSize = container.clientWidth * 0.65 + "px";
   }
+}
+
+export function gridId(...coords: GridCoord[]): string {
+  let id: string = "grid";
+  for (const coord of coords) {
+    id += `-${coord.y}_${coord.x}`;
+  }
+  return id;
 }

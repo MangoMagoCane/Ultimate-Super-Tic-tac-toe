@@ -79,10 +79,9 @@
 }
 .ttt-overlay:hover {
   background-color: var(--gruvbox-fg-color);
-  /* opacity: 0.8; */
 }
 .ttt-overlay:active {
-  background-color: var(--gruvbox-orange-color);
+  background-color: var(--gruvbox-yellow-color);
 }
 
 /* .ttt-button { */
@@ -100,7 +99,7 @@ button:hover {
   background-color: var(--gruvbox-fg-color);
 }
 button:active {
-  background-color: var(--gruvbox-orange-color);
+  background-color: var(--gruvbox-yellow-color);
 }
 /* button:disabled { */
 /* } */

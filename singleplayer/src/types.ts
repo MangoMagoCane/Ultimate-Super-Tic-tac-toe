@@ -6,8 +6,8 @@ export type GridCoord = {
 export type gridState = "X" | "O" | "";
 
 export type USTBoard = {
+  inPlayBoard: [GridCoord?, GridCoord?];
   state: gridState;
-  inPlayBoard: [GridCoord, GridCoord];
   grid: UTTBoard[][];
 };
 
