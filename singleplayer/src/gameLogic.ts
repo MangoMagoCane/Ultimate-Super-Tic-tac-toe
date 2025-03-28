@@ -1,6 +1,15 @@
-import { GridCoord, gridState, TTTBoard, USTBoard, UTTBoard } from "./types";
+import {
+  GameMove,
+  GameState,
+  GridCoord,
+  GridState,
+  TTTBoard,
+  USTBoard,
+  UTTBoard,
+} from "./types";
 
-let player: gridState = "X";
+let globalGameState: GameState = createGameState();
+console.log(globalGameState);
 
 export function buttonClick(
   element: HTMLElement,
@@ -10,19 +19,53 @@ export function buttonClick(
 ): void {
   console.log(element.id.split("-"));
   console.log(ustCoord, uttCoord, tttCoord);
-  console.log(player);
+  console.log(globalGameState.player);
 
   if (element.innerText === "") {
-    element.innerText = player;
-    player = player === "X" ? "O" : "X";
+    element.innerText = globalGameState.player;
+    globalGameState.player = globalGameState.player === "X" ? "O" : "X";
   }
 }
 
-export function createGameState(): USTBoard {
+export function playRound(inputState: GameState, move: GameMove): GameState {
+  const { inPlayUttBoard, inPlayTttBoard } = inputState;
+  const { ustMove, uttMove, tttMove } = move;
+
+  const outputState: GameState = window.structuredClone(inputState);
+  outputState.player = inputState.player === "X" ? "O" : "X";
+
+  const uttBoard: UTTBoard = outputState.board.grid[ustMove.y][ustMove.x];
+  const validUttMove: boolean =
+    !!inPlayUttBoard &&
+    inPlayUttBoard.y === ustMove.y &&
+    inPlayUttBoard.x === ustMove.x;
+
+  const tttBoard: TTTBoard = uttBoard.grid[uttMove.y][uttMove.x];
+
+  const tttSquareState: GridState = tttBoard.grid[tttMove.y][tttMove.x];
+
+  if (inPlayUttBoard && inPlayTttBoard) {
+    if (!uttBoard.state && !tttBoard.state && !tttSquareState) {
+      tttBoard.grid[tttMove.y][tttMove.x] = inputState.player;
+    } else {
+      // ERROR
+    }
+  }
+
+  return outputState;
+}
+
+export function createGameState(): GameState {
   const ustBoard: USTBoard = {
     state: "",
-    inPlayBoard: [undefined, undefined],
     grid: new Array(3),
+  };
+
+  const gameState: GameState = {
+    player: "X",
+    inPlayUttBoard: undefined,
+    inPlayTttBoard: undefined,
+    board: ustBoard,
   };
 
   for (let i = 0; i < 9; i++) {
@@ -50,5 +93,5 @@ export function createGameState(): USTBoard {
     ustBoard.grid[Math.floor(i / 3)][i % 3] = uttBoard;
   }
 
-  return ustBoard;
+  return gameState;
 }

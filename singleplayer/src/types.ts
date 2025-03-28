@@ -3,20 +3,32 @@ export type GridCoord = {
   y: number;
 };
 
-export type gridState = "X" | "O" | "";
+export type GridState = "X" | "O" | "";
+
+export type GameMove = {
+  ustMove: GridCoord;
+  uttMove: GridCoord;
+  tttMove: GridCoord;
+};
+
+export type GameState = {
+  player: GridState;
+  inPlayUttBoard: GridCoord | undefined;
+  inPlayTttBoard: GridCoord | undefined;
+  board: USTBoard;
+};
 
 export type USTBoard = {
-  inPlayBoard: [GridCoord?, GridCoord?];
-  state: gridState;
+  state: GridState;
   grid: UTTBoard[][];
 };
 
 export type UTTBoard = {
-  state: gridState;
+  state: GridState;
   grid: TTTBoard[][];
 };
 
 export type TTTBoard = {
-  state: gridState;
-  grid: gridState[][];
+  state: GridState;
+  grid: GridState[][];
 };

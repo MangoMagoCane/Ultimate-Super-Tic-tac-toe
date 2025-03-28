@@ -63,9 +63,9 @@ function createGrid(ustCoord: GridCoord, uttCoord: GridCoord): HTMLDivElement {
       const tttCoord: GridCoord = { y: i, x: j };
       const button: HTMLButtonElement = document.createElement("button");
       button.id = gridId(ustCoord, uttCoord, tttCoord);
-      // if (Math.floor(Math.random() * 2)) {
-      //   button.innerText = Math.floor(Math.random() * 2) ? "X" : "O";
-      // }
+      if (Math.random() > 0.7) {
+        button.innerText = Math.random() > 0.5 ? "X" : "O";
+      }
       button.style.color = `var(--gruvbox-${tttCoord.x % 2 === 0 ? "red" : "blue"}-color)`;
       button.onclick = (): void =>
         buttonClick(button, ustCoord, uttCoord, tttCoord);
@@ -93,9 +93,9 @@ function positionOverlays(colorSetIndex: number): void {
     const colorIndex: number = Math.floor(Math.random() * 2);
     overlay.style.color = `var(--gruvbox-${colorSets[colorSetIndex][colorIndex]}-color)`;
 
-    // if (Math.floor(Math.random() * 2) && colorSetIndex === 2) {
-    //   overlay.innerText = colorIndex ? "X" : "O";
-    // }
+    if (Math.floor(Math.random() * 2) && colorSetIndex === 2) {
+      overlay.innerText = colorIndex ? "X" : "O";
+    }
 
     overlay.style.display = overlay.innerText === "" ? "none" : "flex";
     overlay.style.width = container.clientWidth + "px";
