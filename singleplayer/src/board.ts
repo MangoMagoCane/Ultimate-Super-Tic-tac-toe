@@ -40,6 +40,10 @@ export function createUstBoardDOM(
   container.id = "ust";
   container.className = "ust-container";
   element.innerHTML = ``;
+  const overlay: HTMLDivElement = document.createElement("div");
+  overlay.id = "ust-overlay";
+  overlay.className = "ttt-overlay";
+  overlay.innerText = ustBoard.state;
 
   for (let i = 0; i < 3; i++) {
     const row: HTMLDivElement = document.createElement("div");
@@ -58,6 +62,7 @@ export function createUstBoardDOM(
   }
 
   element.appendChild(container);
+  container.appendChild(overlay);
   positionOverlays(0);
 }
 

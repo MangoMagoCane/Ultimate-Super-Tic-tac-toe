@@ -29,8 +29,6 @@ export function buttonClick(
     globalGameState = result;
     createBoardDOM(appElement, globalGameState);
   }
-  // console.log(ustCoord, uttCoord, tttCoord);
-  // console.log(globalGameState);
 }
 
 export function playRound(
