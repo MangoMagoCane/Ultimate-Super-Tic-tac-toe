@@ -12,6 +12,11 @@ import {
 } from "./types";
 
 export let globalGameState: GameState = createGameState();
+const gameMoves: GameMove[] = [];
+
+export function copyMoves(): void {
+  navigator.clipboard.writeText(JSON.stringify(gameMoves));
+}
 
 export function buttonClick(
   ustCoord: GridCoord,
@@ -75,6 +80,7 @@ export function playRound(
   updateBoard(tttBoard);
   updateBoard(uttBoard);
   updateBoard(ustBoard);
+  gameMoves.push(move);
 
   // Registers new in play board
   if (tttBoard.state !== "") {
@@ -168,12 +174,16 @@ export function createGameState(): GameState {
       if (j < 3) uttBoard.grid[j % 3] = new Array(3);
       const tttBoard: TTTBoard = {
         state: "",
+        // state: Math.random() > 0.9 ? "X" : "",
         grid: new Array(3),
       };
 
       for (let k = 0; k < 9; k++) {
         if (k < 3) tttBoard.grid[k % 3] = new Array(3);
         tttBoard.grid[Math.floor(k / 3)][k % 3] = { state: "" };
+        // tttBoard.grid[Math.floor(k / 3)][k % 3] = {
+        //   state: Math.random() > 0.95 && i % 3 == 0 && j % 2 == 0 ? "X" : "",
+        // };
       }
 
       uttBoard.grid[Math.floor(j / 3)][j % 3] = tttBoard;
