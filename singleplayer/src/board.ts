@@ -1,4 +1,4 @@
-import { buttonClick, copyMoves } from "./gameLogic";
+import { buttonClick, copyMoves, playMoves } from "./gameLogic";
 import {
   GameState,
   GridCoord,
@@ -13,6 +13,15 @@ export function createBoardDOM(
   gameState: GameState,
 ): void {
   element.innerHTML = ``;
+  const copyMovesButton: HTMLButtonElement = document.createElement("button");
+  copyMovesButton.innerText = "copy moves to clipboard";
+  copyMovesButton.onclick = copyMoves;
+  element.append(copyMovesButton);
+
+  const playMovesButton: HTMLButtonElement = document.createElement("button");
+  playMovesButton.innerText = "play moves to clipboard";
+  playMovesButton.onclick = playMoves;
+  element.append(playMovesButton);
   createUstBoardDOM(element, gameState.board);
   if (gameState.inPlayUttBoard) {
     if (gameState.inPlayTttBoard) {
@@ -30,10 +39,6 @@ export function createBoardDOM(
     const element: HTMLDivElement = document.querySelector("#ust")!;
     element.classList.add("in-play-board");
   }
-  const movesButton: HTMLButtonElement = document.createElement("button");
-  movesButton.innerText = "copy moves to clipboard";
-  movesButton.onclick = copyMoves;
-  element.append(movesButton);
 }
 
 export function createUstBoardDOM(

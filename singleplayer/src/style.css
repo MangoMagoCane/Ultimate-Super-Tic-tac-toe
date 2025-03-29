@@ -100,9 +100,16 @@ button {
   border-style: solid;
   border-width: 1px 1px;
   border-color: var(--gruvbox-fg-color);
+  color: var(--gruvbox-blue-color);
   font-weight: bold;
-  font-size: 2vh;
+  font-size: 1.5vh;
   background-color: var(--gruvbox-bg-color);
+}
+button:hover {
+  background-color: var(--gruvbox-fg-color);
+}
+button:active {
+  background-color: var(--gruvbox-yellow-bright-color);
 }
 
 /* .ttt-button { */
@@ -116,12 +123,6 @@ button {
   font-weight: bold;
   font-size: 2vh;
   background-color: var(--gruvbox-bg-color);
-}
-button:hover {
-  background-color: var(--gruvbox-fg-color);
-}
-button:active {
-  background-color: var(--gruvbox-yellow-bright-color);
 }
 .in-play-board button{
   background-color: var(--gruvbox-fg-dark-color);

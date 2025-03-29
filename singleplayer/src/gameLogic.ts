@@ -18,6 +18,20 @@ export function copyMoves(): void {
   navigator.clipboard.writeText(JSON.stringify(gameMoves));
 }
 
+export async function playMoves(): Promise<void> {
+  const text: string = await navigator.clipboard.readText();
+  const moves = JSON.parse(text) as GameMove[];
+
+  for (const move of moves) {
+    const result = playRound(globalGameState, move);
+    if (result !== undefined) {
+      globalGameState = result;
+    }
+    createBoardDOM(appElement, globalGameState);
+    await sleep(0.5);
+  }
+}
+
 export function buttonClick(
   ustCoord: GridCoord,
   uttCoord: GridCoord,
@@ -193,4 +207,8 @@ export function createGameState(): GameState {
   }
 
   return gameState;
+}
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
