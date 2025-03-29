@@ -12,7 +12,6 @@ import {
 } from "./types";
 
 export let globalGameState: GameState = createGameState();
-console.log(globalGameState);
 
 export function buttonClick(
   ustCoord: GridCoord,
@@ -67,19 +66,18 @@ export function playRound(
     validTttMove
   ) {
     tttBoard.grid[tttMove.y][tttMove.x].state = inputState.player;
-    console.log("valid move");
   } else {
-    console.log("ERROR: Invalid move 2.");
+    console.log("ERROR: Invalid move.");
     return undefined;
   }
 
+  // Registers if boards have been won.
   updateBoard(tttBoard);
   updateBoard(uttBoard);
   updateBoard(ustBoard);
 
-  console.log("bar", uttBoard);
+  // Registers new in play board
   if (tttBoard.state !== "") {
-    console.log("foo", uttBoard.state);
     outputState.inPlayUttBoard =
       ustBoard.grid[uttMove.y][uttMove.x].state !== ""
         ? undefined
@@ -95,6 +93,7 @@ export function playRound(
   } else {
     outputState.inPlayTttBoard = undefined;
   }
+
   return outputState;
 }
 

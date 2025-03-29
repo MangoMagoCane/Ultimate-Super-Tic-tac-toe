@@ -13,7 +13,6 @@ export function createBoardDOM(
   gameState: GameState,
 ): void {
   createUstBoardDOM(element, gameState.board);
-  console.log("create", gameState);
   if (gameState.inPlayUttBoard) {
     if (gameState.inPlayTttBoard) {
       const element: HTMLDivElement = document.querySelector(
