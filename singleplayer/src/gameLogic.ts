@@ -1,4 +1,7 @@
+import { createBoardDOM } from "./board";
+import { appElement } from "./main";
 import {
+  Board,
   GameMove,
   GameState,
   GridCoord,
@@ -8,51 +11,140 @@ import {
   UTTBoard,
 } from "./types";
 
-let globalGameState: GameState = createGameState();
+export let globalGameState: GameState = createGameState();
 console.log(globalGameState);
 
 export function buttonClick(
-  element: HTMLElement,
   ustCoord: GridCoord,
-  uttCoord?: GridCoord,
-  tttCoord?: GridCoord,
+  uttCoord: GridCoord,
+  tttCoord: GridCoord,
 ): void {
-  console.log(element.id.split("-"));
-  console.log(ustCoord, uttCoord, tttCoord);
-  console.log(globalGameState.player);
+  const result = playRound(globalGameState, {
+    ustMove: ustCoord,
+    uttMove: uttCoord,
+    tttMove: tttCoord,
+  });
 
-  if (element.innerText === "") {
-    element.innerText = globalGameState.player;
-    globalGameState.player = globalGameState.player === "X" ? "O" : "X";
+  if (result !== undefined) {
+    globalGameState = result;
+    createBoardDOM(appElement, globalGameState);
   }
+  // console.log(ustCoord, uttCoord, tttCoord);
+  // console.log(globalGameState);
 }
 
-export function playRound(inputState: GameState, move: GameMove): GameState {
+export function playRound(
+  inputState: GameState,
+  move: GameMove,
+): GameState | undefined {
   const { inPlayUttBoard, inPlayTttBoard } = inputState;
   const { ustMove, uttMove, tttMove } = move;
+
+  console.assert(
+    !(inPlayUttBoard === undefined && inPlayTttBoard !== undefined),
+    "inPlayUttBoard must not be undefined if inPlayTttBoard isn't undefined",
+  );
 
   const outputState: GameState = window.structuredClone(inputState);
   outputState.player = inputState.player === "X" ? "O" : "X";
 
-  const uttBoard: UTTBoard = outputState.board.grid[ustMove.y][ustMove.x];
   const validUttMove: boolean =
-    !!inPlayUttBoard &&
-    inPlayUttBoard.y === ustMove.y &&
-    inPlayUttBoard.x === ustMove.x;
+    inPlayUttBoard === undefined ||
+    (inPlayUttBoard.y === ustMove.y && inPlayUttBoard.x === ustMove.x);
+  const validTttMove: boolean =
+    inPlayTttBoard === undefined ||
+    (inPlayTttBoard.y === uttMove.y && inPlayTttBoard.x === uttMove.x);
 
+  const ustBoard: USTBoard = outputState.board;
+  const uttBoard: UTTBoard = outputState.board.grid[ustMove.y][ustMove.x];
   const tttBoard: TTTBoard = uttBoard.grid[uttMove.y][uttMove.x];
+  const tttSquare: GridState = tttBoard.grid[tttMove.y][tttMove.x].state;
 
-  const tttSquareState: GridState = tttBoard.grid[tttMove.y][tttMove.x];
-
-  if (inPlayUttBoard && inPlayTttBoard) {
-    if (!uttBoard.state && !tttBoard.state && !tttSquareState) {
-      tttBoard.grid[tttMove.y][tttMove.x] = inputState.player;
-    } else {
-      // ERROR
-    }
+  // Registers move if valid.
+  if (
+    uttBoard.state === "" &&
+    tttBoard.state === "" &&
+    tttSquare === "" &&
+    validUttMove &&
+    validTttMove
+  ) {
+    tttBoard.grid[tttMove.y][tttMove.x].state = inputState.player;
+    console.log("valid move");
+  } else {
+    console.log("ERROR: Invalid move 2.");
+    return undefined;
   }
 
+  updateBoard(tttBoard);
+  updateBoard(uttBoard);
+  updateBoard(ustBoard);
+
+  console.log("bar", uttBoard);
+  if (tttBoard.state !== "") {
+    console.log("foo", uttBoard.state);
+    outputState.inPlayUttBoard =
+      ustBoard.grid[uttMove.y][uttMove.x].state !== ""
+        ? undefined
+        : { y: uttMove.y, x: uttMove.x };
+    outputState.inPlayTttBoard = undefined;
+    return outputState;
+  }
+
+  outputState.inPlayUttBoard = { y: ustMove.y, x: ustMove.x };
+
+  if (uttBoard.grid[tttMove.y][tttMove.x].state === "") {
+    outputState.inPlayTttBoard = { y: tttMove.y, x: tttMove.x };
+  } else {
+    outputState.inPlayTttBoard = undefined;
+  }
   return outputState;
+}
+
+function updateBoard(board: Board): void {
+  for (const player of ["X", "O"] as GridState[]) {
+    for (let i = 0; i < 3; i++) {
+      let threeHorizontal: boolean = true;
+      let threeVertical: boolean = true;
+
+      for (let j = 0; j < 3; j++) {
+        if (board.grid[i][j].state !== player) {
+          threeHorizontal = false;
+        }
+        if (board.grid[j][i].state !== player) {
+          threeVertical = false;
+        }
+      }
+
+      if (threeHorizontal || threeVertical) {
+        board.state = player;
+        return;
+      }
+    }
+
+    let threeDiagonal = true;
+    for (let i = 0; i < 3; i++) {
+      if (board.grid[i][i].state !== player) {
+        threeDiagonal = false;
+        break;
+      }
+    }
+    if (threeDiagonal) {
+      board.state = player;
+      return;
+    }
+
+    threeDiagonal = true;
+    for (let i = 2; i >= 0; i--) {
+      if (board.grid[i][i].state !== player) {
+        threeDiagonal = false;
+        break;
+      }
+    }
+    if (threeDiagonal) {
+      board.state = player;
+      return;
+    }
+  }
 }
 
 export function createGameState(): GameState {
@@ -84,7 +176,7 @@ export function createGameState(): GameState {
 
       for (let k = 0; k < 9; k++) {
         if (k < 3) tttBoard.grid[k % 3] = new Array(3);
-        tttBoard.grid[Math.floor(k / 3)][k % 3] = "";
+        tttBoard.grid[Math.floor(k / 3)][k % 3] = { state: "" };
       }
 
       uttBoard.grid[Math.floor(j / 3)][j % 3] = tttBoard;

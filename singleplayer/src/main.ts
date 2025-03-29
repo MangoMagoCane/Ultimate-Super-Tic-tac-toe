@@ -1,10 +1,10 @@
 import "./style.css";
-import { setupBoard } from "./board.ts";
+import { createBoardDOM } from "./board.ts";
+import { globalGameState } from "./gameLogic.ts";
 
-const appElement = document.querySelector<HTMLDivElement>("#app")!;
-appElement.innerHTML = ``;
+export const appElement = document.querySelector<HTMLDivElement>("#app")!;
+createBoardDOM(appElement, globalGameState);
+
 addEventListener("resize", () => {
-  appElement.innerHTML = ``;
-  setupBoard(appElement);
+  createBoardDOM(appElement, globalGameState);
 });
-setupBoard(appElement);

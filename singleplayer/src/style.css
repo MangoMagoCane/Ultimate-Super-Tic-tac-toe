@@ -1,13 +1,16 @@
 :root {
-  --gruvbox-fg-color: rgb(60, 56, 54);
   --gruvbox-bg-color: rgb(40, 40, 40);
+  --gruvbox-fg-color: rgb(60, 56, 54);
+  --gruvbox-fg-dark-color: rgb(30, 27, 26);
   --gruvbox-green-color: rgb(120, 160, 105);
   --gruvbox-red-color: rgb(230, 70, 50);
-  --gruvbox-yellow-color: rgb(250, 190, 50);
+  --gruvbox-yellow-color: rgb(225, 170, 45);
+  --gruvbox-yellow-bright-color: rgb(250, 190, 50);
   --gruvbox-orange-color: rgb(245, 125, 25);
   --gruvbox-blue-color: rgb(130, 165, 150);
   --gruvbox-teal-color: rgb(140, 190, 125);
   --gruvbox-purple-color: rgb(210, 135, 155);
+  --gruvbox-cream-color: rgb(235, 220, 180);
 
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -29,7 +32,7 @@
   justify-content: space-evenly;
   align-items: center;
   border-style: solid;
-  border-width: 2px 2px solid;
+  border-width: 2px solid;
   border-color: var(--gruvbox-fg-color);
   width: 95vh;
   height: 95vh;
@@ -41,8 +44,10 @@
   justify-content: space-evenly;
   align-items: center;
   border-style: solid;
-  border-width: 4px 4px;
+  border-width: 4px;
   border-color: var(--gruvbox-fg-color);
+  outline-width: 4px;
+  outline-color: var(--gruvbox-orange-color);
   width: 100%;
   height: 100%;
 }
@@ -53,8 +58,10 @@
   justify-content: space-evenly;
   align-items: center;
   border-style: solid;
-  border-width: 2px 2px;
+  border-width: 2px;
   border-color: var(--gruvbox-fg-color);
+  outline-width: 2px;
+  outline-color: var(--gruvbox-orange-color);
   width: 100%;
   height: 100%;
 }
@@ -65,8 +72,10 @@
   justify-content: space-evenly;
   align-items: center;
   border-style: solid;
-  border-width: 2px 2px;
+  border-width: 2px;
   border-color: var(--gruvbox-fg-color);
+  outline-width: 2px;
+  outline-color: var(--gruvbox-orange-color);
   width: 100%;
   height: 100%;
 }
@@ -92,26 +101,25 @@ button {
   border-style: solid;
   border-width: 1px 1px;
   border-color: var(--gruvbox-fg-color);
-  font-size: 1vh;
+  font-weight: bold;
+  font-size: 2vh;
   background-color: var(--gruvbox-bg-color);
 }
 button:hover {
   background-color: var(--gruvbox-fg-color);
 }
 button:active {
-  background-color: var(--gruvbox-yellow-color);
+  background-color: var(--gruvbox-yellow-bright-color);
 }
-/* button:disabled { */
-/* } */
-
-/* a { */
-/*   font-weight: 500; */
-/*   color: #646cff; */
-/*   text-decoration: inherit; */
-/* } */
-/* a:hover { */
-/*   color: #535bf2; */
-/* } */
+.in-play-board button{
+  background-color: var(--gruvbox-fg-dark-color);
+}
+.in-play-board button:hover {
+  background-color: var(--gruvbox-fg-color);
+}
+.in-play-board button:active {
+  background-color: var(--gruvbox-orange-color);
+}
 
 body {
   margin: 0;

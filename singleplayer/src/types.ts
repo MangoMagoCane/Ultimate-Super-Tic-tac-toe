@@ -5,6 +5,10 @@ export type GridCoord = {
 
 export type GridState = "X" | "O" | "";
 
+export type GridObject = {
+  state: GridState;
+};
+
 export type GameMove = {
   ustMove: GridCoord;
   uttMove: GridCoord;
@@ -30,5 +34,10 @@ export type UTTBoard = {
 
 export type TTTBoard = {
   state: GridState;
-  grid: GridState[][];
+  grid: GridObject[][];
 };
+
+export interface Board {
+  state: GridState;
+  grid: GridObject[][];
+}
