@@ -19,6 +19,7 @@ export function copyMoves(): void {
 }
 
 export async function playMoves(): Promise<void> {
+  globalGameState = createGameState();
   const text: string = await navigator.clipboard.readText();
   const moves = JSON.parse(text) as GameMove[];
 
