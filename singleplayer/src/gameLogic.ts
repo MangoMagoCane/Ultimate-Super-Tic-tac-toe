@@ -134,8 +134,8 @@ function updateBoard(board: Board): void {
     }
 
     threeDiagonal = true;
-    for (let i = 2; i >= 0; i--) {
-      if (board.grid[i][i].state !== player) {
+    for (let i = 0; i < 3; i++) {
+      if (board.grid[i][2 - i].state !== player) {
         threeDiagonal = false;
         break;
       }
