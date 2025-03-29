@@ -15,13 +15,16 @@ export let globalGameState: GameState = createGameState();
 const gameMoves: GameMove[] = [];
 
 export function copyMoves(): void {
-  navigator.clipboard.writeText(JSON.stringify(gameMoves));
+  if (gameMoves.length != 0) {
+    navigator.clipboard.writeText(JSON.stringify(gameMoves));
+  }
 }
 
 export async function playMoves(): Promise<void> {
   globalGameState = createGameState();
   const text: string = await navigator.clipboard.readText();
   const moves = JSON.parse(text) as GameMove[];
+  gameMoves.length = 0;
 
   for (const move of moves) {
     const result = playRound(globalGameState, move);
