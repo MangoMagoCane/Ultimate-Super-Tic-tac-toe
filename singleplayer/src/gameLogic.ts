@@ -16,23 +16,40 @@ const gameMoves: GameMove[] = [];
 
 export function copyMoves(): void {
   if (gameMoves.length != 0) {
-    navigator.clipboard.writeText(JSON.stringify(gameMoves));
+    try {
+      navigator.clipboard.writeText(JSON.stringify(gameMoves));
+    } catch {
+      return;
+    }
   }
+  console.log(gameMoves.length);
 }
 
 export async function playMoves(): Promise<void> {
   globalGameState = createGameState();
   const text: string = await navigator.clipboard.readText();
-  const moves = JSON.parse(text) as GameMove[];
+  let moves: GameMove[];
+
+  try {
+    moves = JSON.parse(text) as GameMove[];
+    if (!(moves instanceof Array)) {
+      return;
+    }
+  } catch {
+    return;
+  }
+
   gameMoves.length = 0;
 
+  let sleepTime: number = 0.5;
   for (const move of moves) {
     const result = playRound(globalGameState, move);
     if (result !== undefined) {
       globalGameState = result;
     }
     createBoardDOM(appElement, globalGameState);
-    await sleep(0.5);
+    await sleep(sleepTime);
+    sleepTime = Math.max(sleepTime * 0.99, 0.01);
   }
 }
 

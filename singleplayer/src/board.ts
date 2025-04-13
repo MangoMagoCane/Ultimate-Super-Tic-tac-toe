@@ -12,16 +12,12 @@ export function createBoardDOM(
   element: HTMLDivElement,
   gameState: GameState,
 ): void {
-  element.innerHTML = ``;
-  const copyMovesButton: HTMLButtonElement = document.createElement("button");
-  copyMovesButton.innerText = "copy moves to clipboard";
-  copyMovesButton.onclick = copyMoves;
-  element.append(copyMovesButton);
+  const previousUstContainer: HTMLDivElement | null =
+    document.querySelector("#ust");
+  if (previousUstContainer !== null) {
+    element.removeChild(document.querySelector("#ust")!);
+  }
 
-  const playMovesButton: HTMLButtonElement = document.createElement("button");
-  playMovesButton.innerText = "play moves to clipboard";
-  playMovesButton.onclick = playMoves;
-  element.append(playMovesButton);
   createUstBoardDOM(element, gameState.board);
   if (gameState.inPlayUttBoard) {
     if (gameState.inPlayTttBoard) {
